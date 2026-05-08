@@ -1,0 +1,20 @@
+[project]
+name = "agent-bridge-ai"
+version = "0.1.0"
+description = "Multi AI Agents"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "bs4>=0.0.2",
+    "duckdb>=1.5.2",
+    "fastapi>=0.136.1",
+    "langchain>=1.2.17",
+    "langchain-community>=0.4.1",
+    "langchain-openai>=1.2.1",
+    "langchain-text-splitters>=1.1.2",
+    "langgraph>=1.1.10",
+    "pydantic-settings>=2.14.0",
+    "tavily>=1.1.0",
+    "tavily-python>=0.7.24",
+    "uvicorn>=0.46.0",
+]
