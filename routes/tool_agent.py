@@ -1,14 +1,22 @@
+import json
 
 from fastapi import APIRouter
-from starlette.concurrency import run_in_threadpool
+from fastapi.responses import StreamingResponse
 
 from agents.tools_agent import tools_agent
-from routes.schemas import AgentResponse
+from routes.schemas import QueryRequest
 
 router = APIRouter(prefix="/agent", tags=["agents"])
 
 
-@router.get("/run", response_model=AgentResponse)
-async def run_agent(question: str) -> AgentResponse:
-    result = await run_in_threadpool(tools_agent, question)
-    return AgentResponse(output=result["output"])
+async def event_stream(question: str):
+    async for event_type, content in tools_agent(question):
+        yield f"data: {json.dumps({'type': event_type, 'content': content})}\n\n"
+
+
+@router.post("/run")
+async def run_agent(request: QueryRequest):
+    return StreamingResponse(
+        event_stream(request.query),
+        media_type="text/event-stream"
+    )
