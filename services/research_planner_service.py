@@ -1,25 +1,27 @@
-def fixed_research_plan(topic: str) -> str:
+from langchain_core.messages import HumanMessage, SystemMessage
+from agents.model import model_provider
 
-    return f"""
-        Research Plan for: {topic}
+_SYSTEM_PROMPT = """You are an AI research planner.
 
-        1. Understand the topic
-        - Define the main idea.
-        - Identify the key questions.
+Create a practical research plan based on the user's topic and goal.
+Do not return a generic fixed plan.
+The plan must be specific to the topic.
 
-        2. Collect documents
-        - Find related articles, reports, or PDFs.
-        - Save useful sources for RAG.
+Return:
+- topic
+- goal
+- key research questions
+- useful search queries
+- step-by-step research actions
+- final output format"""
 
-        3. Read and extract key points
-        - Summarize the important information.
-        - Highlight facts, definitions, and examples.
 
-        4. Compare the findings
-        - Check if the sources agree or disagree.
-        - Identify common patterns.
+async def dynamic_research_plan(topic: str, goal: str) -> str:
 
-        5. Prepare the final answer
-        - Write a clear summary.
-        - Include the most important insights from the documents.
-        """
+    model = model_provider.get_model()
+    messages = [
+        SystemMessage(content=_SYSTEM_PROMPT),
+        HumanMessage(content=f"Topic: {topic}\nGoal: {goal}"),
+    ]
+    response = await model.ainvoke(messages)
+    return response.content

@@ -8,7 +8,7 @@ from routes.schemas import (
     ResearchPlannerResponse,
 )
 from services.web_serach_service import run_web_search
-from services.research_planner_service import fixed_research_plan
+from services.research_planner_service import dynamic_research_plan
 
 router = APIRouter(prefix="/tools", tags=["tools"])
 
@@ -21,7 +21,7 @@ async def web_search_route(query: str) -> WebSearchResponse:
 
 @router.post("/research-planner", response_model=ResearchPlannerResponse)
 async def research_planner_route(body: ResearchPlannerRequest) -> ResearchPlannerResponse:
-    plan = await run_in_threadpool(fixed_research_plan, body.topic)
+    plan = await dynamic_research_plan(body.topic, body.goal)
     return ResearchPlannerResponse(plan=plan)
 
 

@@ -1,4 +1,4 @@
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langchain.agents import create_agent
 
 from agents.model import model_provider
@@ -9,9 +9,9 @@ from tools.research_planner import research_planner
 _TOOLS = [web_search, research_planner]
 
 _SYSTEM_PROMPT = (
-    "You are a helpful assistant with access to tools for web search and research planning. "
-    "Use web_search for current or real-time information. "
-    "Use research_planner to create structured research plans."
+    "You are a helpful assistant. "
+    "Use web_search to find information or answer questions. "
+    "Only use research_planner when the user explicitly asks to create or organize a research plan — never as a step before web_search."
 )
 
 
@@ -23,6 +23,7 @@ async def tools_agent(question: str):
         msg, metadata = chunk
 
         if isinstance(msg, AIMessage) and msg.content:
+            
             if isinstance(msg.content, str):
                 yield ("token", msg.content)
             elif isinstance(msg.content, list):
