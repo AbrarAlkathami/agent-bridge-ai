@@ -1,7 +1,7 @@
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain.agents import create_agent
 
-from agents.model import get_model
+from agents.model import model_provider
 from tools.web_search import web_search
 from tools.research_planner import research_planner
 
@@ -16,7 +16,7 @@ _SYSTEM_PROMPT = (
 
 
 async def tools_agent(question: str):
-    agent = create_agent(model=get_model(), tools=_TOOLS, system_prompt=_SYSTEM_PROMPT)
+    agent = create_agent(model=model_provider.get_model(), tools=_TOOLS, system_prompt=_SYSTEM_PROMPT)
 
     messages = {"messages": [HumanMessage(content=question)]}
     async for chunk in agent.astream(messages, stream_mode="messages"):
