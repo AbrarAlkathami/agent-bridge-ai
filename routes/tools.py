@@ -21,7 +21,7 @@ async def web_search_route(query: str) -> WebSearchResponse:
 
 @router.post("/research-planner", response_model=ResearchPlannerResponse)
 async def research_planner_route(body: ResearchPlannerRequest) -> ResearchPlannerResponse:
-    plan = await run_in_threadpool(fixed_research_plan.invoke, {"topic": body.topic})
+    plan = await run_in_threadpool(fixed_research_plan, body.topic)
     return ResearchPlannerResponse(plan=plan)
 
 
