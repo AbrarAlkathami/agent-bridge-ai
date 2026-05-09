@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "query": "What does the uploaded document say about the project requirements?",
+    "expected_route": "rag",
+    "expected_behavior": "Agent retrieves chunks from the vector store and cites the document as the source.",
+    "pass_criteria": [
+      "Route is 'rag'",
+      "At least one chunk is returned in the context",
+      "Answer references content from the document"
+    ]
+  },
+  {
+    "id": 2,
+    "query": "Summarize the key points from my uploaded files.",
+    "expected_route": "rag",
+    "expected_behavior": "Agent uses retrieve_context tool and returns a summary grounded in the retrieved chunks.",
+    "pass_criteria": [
+      "Route is 'rag'",
+      "Chunks are returned alongside the answer",
+      "Answer does not fabricate information not in the documents"
+    ]
+  },
+  {
+    "id": 3,
+    "query": "What is the latest news about artificial intelligence today?",
+    "expected_route": "tools",
+    "expected_behavior": "Agent uses web_search to fetch current information and returns a summarized answer.",
+    "pass_criteria": [
+      "Route is 'tools'",
+      "web_search tool is invoked",
+      "Answer reflects real-time or recent information"
+    ]
+  },
+  {
+    "id": 4,
+    "query": "Create a research plan for studying climate change.",
+    "expected_route": "tools",
+    "expected_behavior": "Agent invokes the research_planner tool and returns a structured multi-step plan.",
+    "pass_criteria": [
+      "Route is 'tools'",
+      "research_planner tool is invoked",
+      "Response contains numbered steps or sections"
+    ]
+  },
+  {
+    "id": 5,
+    "query": "Search for recent developments in large language models.",
+    "expected_route": "tools",
+    "expected_behavior": "Agent uses web_search and returns a summary of recent LLM developments.",
+    "pass_criteria": [
+      "Route is 'tools'",
+      "web_search tool is invoked",
+      "Answer contains specific recent information"
+    ]
+  },
+  {
+    "id": 6,
+    "query": "Find information about the case study in the document.",
+    "expected_route": "rag",
+    "expected_behavior": "Agent retrieves relevant chunks from the indexed document and answers based on them.",
+    "pass_criteria": [
+      "Route is 'rag'",
+      "Retrieved chunks reference a case study",
+      "Answer is grounded in document content"
+    ]
+  },
+  {
+    "id": 7,
+    "query": "What topics are covered in the uploaded PDF?",
+    "expected_route": "rag",
+    "expected_behavior": "Agent retrieves multiple chunks from the PDF and lists the main topics found.",
+    "pass_criteria": [
+      "Route is 'rag'",
+      "Multiple chunks returned",
+      "Answer enumerates topics present in the document"
+    ]
+  },
+  {
+    "id": 8,
+    "query": "Give me a research plan for machine learning in healthcare.",
+    "expected_route": "tools",
+    "expected_behavior": "Agent uses research_planner and returns a structured plan covering the topic.",
+    "pass_criteria": [
+      "Route is 'tools'",
+      "research_planner tool is invoked",
+      "Plan mentions healthcare and ML-specific steps"
+    ]
+  },
+  {
+    "id": 9,
+    "query": "What happened in tech news this week?",
+    "expected_route": "tools",
+    "expected_behavior": "Agent uses web_search to retrieve current tech news and summarizes results.",
+    "pass_criteria": [
+      "Route is 'tools'",
+      "web_search tool is invoked",
+      "Answer contains specific recent events"
+    ]
+  },
+  {
+    "id": 10,
+    "query": "According to my documents, what are the main deliverables mentioned?",
+    "expected_route": "rag",
+    "expected_behavior": "Agent retrieves chunks mentioning deliverables and lists them in the answer.",
+    "pass_criteria": [
+      "Route is 'rag'",
+      "Chunks are retrieved and shown",
+      "Answer references deliverables from document content"
+    ]
+  }
+]

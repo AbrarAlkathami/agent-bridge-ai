@@ -1,8 +1,16 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from starlette.concurrency import run_in_threadpool
 
+from agents.rag_agent import rag_agent
 from core.config import settings
-from routes.schemas import DebugChunkResult, DebugSearchRequest, DebugSearchResponse
+from routes.schemas import (
+    DebugChunkResult,
+    DebugRagRequest,
+    DebugRagResponse,
+    DebugSearchRequest,
+    DebugSearchResponse,
+)
 from services.retrieval_service import inspect_database, search_similar_chunks
 
 router = APIRouter(tags=["debug"])
@@ -27,3 +35,11 @@ async def debug_search(request: DebugSearchRequest) -> DebugSearchResponse:
 async def inspect_db() -> dict:
     _require_debug()
     return await run_in_threadpool(inspect_database)
+
+
+@router.post("/debug/rag")
+async def debug_rag(request: DebugRagRequest) -> DebugRagResponse:
+    return StreamingResponse(
+        rag_agent(request.query), 
+        media_type="text/event-stream" # Use event-stream for better frontend handling
+    )
